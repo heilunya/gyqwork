@@ -1,0 +1,12 @@
+@author guoyaqiu
+
+让程序跑起来，只需两步：
+1,先运行netuse.bat，将远端服务器映射到本地盘符。
+2,运行checkRecord.bat实现监控。
+
+如果有台新的录音服务器要监控：
+1,在netuse.bat中指定映射的盘符（任意，不能与原有的冲突）
+2,在配置文件/conf/config.properties中加入新服务器IP，逻辑端口，映射到盘符（与netuse.bat对应）
+3,在CheckRecordTask.java的静态数组IPList,FailCount,FailFileName分别加入初始值 新服务器IP,0,""
+4,运行netuse.bat,再运行checkRecord.bat
+
