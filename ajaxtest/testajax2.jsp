@@ -133,7 +133,7 @@
 	   data="test1,1;test2,2;test3,3;";
 	   
 	   	var arrField=data.split(";");
-	   	alert("hello1");
+	   	//alert("hello1");
 		var Obj =document.getElementById("CusClassifyItem");
 		if (arrField.length<=0)
 		{
@@ -142,14 +142,14 @@
 		}
 		else
 		{
-			alert("hello1");
+			//alert("hello1");
 			//var table = document.createElement("table");
 		   //	table.width="50%";
 		   //	var tr = document.createElement("tr");
 		   	var bodystr = "";
 			for(var i=0;i<=arrField.length-2;i+=1)
 			{	
-				alert("hello2");
+				//alert("hello2");
 				 var arrField2=arrField[i].split(",");
 				 //alert(arrField2.length);
 				 if (arrField2.length>0)
@@ -162,13 +162,13 @@
 				 
 
 			}
-			alert("hello3");
+			//alert("hello3");
 			 //table.appendChild(tr);
 			// document.getElementById("CusClassifyItem").appendChild(table);
 			 //alert("hello4");
 			//$("#productID").attr("loaded",true);
            	$("#CusClassifyItem").html(bodystr);
-           	alert("hello4");
+           	//alert("hello4");
 		}
 	 
 	   	/*  	
@@ -224,6 +224,10 @@
 		//obj.add(opt); //ｉｅ
 		obj.options.add(opt);//firefox ie
 	}
+   function trim(str) {
+		var str1=str.replace(/(^\s*)|(\s*$)/g,"");
+		return str1.replace("　","");
+   }
 </script>
 
 
