@@ -1,0 +1,3 @@
+先在/home下创建文件夹luceneDate 切换到新建的文件夹下，创建几个txt文件。
+打开/src/main/java/testlucene/TxtFileIndexdr.java        先运行这个文件，会在/home  下生成文件夹luceneIndex
+在运行TxtFileSearcher.java 查看控制台数据，已经完成检索。
