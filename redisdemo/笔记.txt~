@@ -1,0 +1,9 @@
+redis  是内存数据库，提高数据访问的速度。本项目使用redis2.6版本。
+先在官方网站http://www.redis.io/ 下载redis ，命令参考http://redisdoc.com/
+运行环境linux(如果要用windows作为redis内存数据库服务器，就要下载redis 的windows版本，运行 redis-server.exe redis.conf 启动服务，
+											redis-cli.exe -h 192.168.59.135 -p 6379  客户端连接服务器)
+现在以linux下为例：
+1,到官网下载redis，如果是源码包，就解压后make ，然后修改配置文件的绑定IP
+2,运行命令src/redis-server 启动服务，src/redis-cli 命令 打开客户端。
+3,在客户端简单测试下，用命令：set key value  然后 get key 看是否有输出value，有就可以了
+4,打开eclipse ，新建项目，去网上下载redis.jar包，导入项目，编写程序，看输出。
