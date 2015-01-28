@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//conf/config.properties=GBK
+encoding//src/com/util/config.properties=UTF-8
+encoding//src/sms_engine.properties=GBK
+encoding/<project>=GBK
