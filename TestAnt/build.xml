@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+   <!--定义project文件的文件名与默认执行目标-->
+<project default="dist" name="Project Argon" basedir=".">
+     <!--添加描述-->
+     <description>A simple Java project</description>
+     <!--添加属性,相当于文件级的全局变量,此处用于设置目录名称-->
+     <property name="srcDir" location="src" />
+     <property name="buildDir" location="build/classes" />
+     <property name="distDir" location="dist" />
+   	 <property name="DSTAMP" value="gyq" />
+	<property file="project.properties"/>
+	<condition property="flag">
+	            <and>
+	                <isset property="DSTAMP"/>
+	                <isset property="distDir"/>
+	            </and>
+	        </condition>
+     <!--创建目标,操作为创建文件夹-->
+   <target name="init">
+         <tstamp />
+         <mkdir dir="${buildDir}" />
+         <mkdir dir="${distDir}" />
+   </target>
+   <!--创建目标compile,操作为编译src目录下的.java文件并输出.class文件到build目录-->
+   <target name="compile" depends="init">
+         <javac srcdir="${srcDir}" destdir="${buildDir}" />
+   </target>
+   <!--创建目标dist,操作为打包.class文件并输出到dist目录,打包.java文件并输出到dist目录-->
+   <target name="dist" depends="compile">
+      <jar destfile="${distDir}/package-${DSTAMP}.jar" basedir="${buildDir}">
+                  <!--创建清单-->
+                 <manifest>
+                          <attribute name="Built-By" value="${user.name}" />
+                          <attribute name="Main-Class" value="package.Main" />
+                 </manifest>
+            </jar>
+            <jar destfile="${distDir}/package-src-${DSTAMP}.jar" basedir="${srcDir}" />
+      </target>
+      <!--创建目标clean,操作为清空build与dist目录-->
+      <target name="clean">
+                   <_delete dir="${buildDir}" />
+                   <_delete dir="${distDir}" />
+      </target>
+	<target depends="init" name="-javadoc-build">
+	        <mkdir dir="${dist.javadoc.dir}"/>
+	        <javadoc additionalparam="${javadoc.additionalparam}" author="${javadoc.author}" charset="UTF-8" destdir="${dist.javadoc.dir}" docencoding="UTF-8" encoding="UTF-8" failonerror="true" noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}" notree="${javadoc.notree}" private="${javadoc.private}" source="${javac.source}" splitindex="${javadoc.splitindex}" use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}">
+	            <classpath>
+	                <path path="${javac.classpath}"/>
+	            </classpath>
+	            <fileset dir="${src.dir}" excludes="${excludes}" includes="${includes}">
+	                <filename name="**/*.java"/>
+	            </fileset>
+	        </javadoc>
+	    </target>
+	<!-- 
+	    <target depends="compile,-javadoc-build" if="flag" name="-javadoc-browse" unless="no.javadoc.preview">
+	        <nbbrowse file="${dist.javadoc.dir}/index.html"/>
+	    </target>
+	   -->
+	<target depends="compile,-javadoc-build" description="Build Javadoc." name="javadoc"/>
+</project>
