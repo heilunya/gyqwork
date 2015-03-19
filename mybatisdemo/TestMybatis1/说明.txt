@@ -1,0 +1,1 @@
+本项目相当于一个hello world程序。先配置好mybatid-config.xml的数据源，然后运行TestBlog.java 看输出结果。
