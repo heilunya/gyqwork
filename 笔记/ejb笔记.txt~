@@ -1,0 +1,15 @@
+1,在eclipse新建一个java项目，编写一个接口（普通接口），一个实现类（实现类要用注解指定状态，是否远程对象），导入javaee-api.jar文件，在属性，build path 添加
+
+2,用eclipse编写代码后，选择导出jar文件，勾选打包的文件时，记得去掉web 或者WebRoot目录（如果有的话）
+
+3,将项目的web文件打包成一个war文件，到该目录下，执行 zip newfile.zip filename1 filename2 生成的文件该个扩展名为.war即可（记得不能包含lib文件夹或者class文件）
+
+4,在装好jboss的服务器上，将上面生成的jar，war两个文件发布到路径：\jboss-4.2.3.GA\server\default\deploy 下，启动服务。
+
+5,打开浏览器 ，输入：http://localhost:8080/打包的war文件名/要访问的jsp页面名称  可以看到效果，并且控制台没报错就成功了。
+
+注意：
+
+如果一开始创建的是java项目，要转为web项目 ，可以参考这篇文章：http://blog.csdn.net/yaerfeng/article/details/8751209
+
+ejb的bean是基于session的，如果修改了，要重新打开浏览器，再次键入地址才能看到效果。不能只是刷新页面。

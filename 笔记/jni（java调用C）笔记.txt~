@@ -1,0 +1,63 @@
+在eclipse中创建java项目，编写class，声明方面为native，且不实现方法体。然后在静态块中加载dll
+（本地为window系统）或so文件（本地为linux系统）。然后一个main方法调用前面声明的方法。具体代码如下：
+public class TestJni
+{
+       public native void display(String strName);
+       static {
+              System.loadLibrary("Test");
+       }
+       public static void main(String[] args){
+              new TestJni().display("Christmas");
+       }
+}
+保存后，eclipse会自动编译生成class文件
+然后我们要在cmd，cd到项目的bin目录（也可以用cd到src目录下，先用命令：javac -d . *.java 先生成class文件，此时后续操作都在该路径下进行）
+执行：javah -classpath . -jni jni.TestJni     生成jni_TestJni.h 文件
+
+打开该头文件，可以看到内容是：
+#include <jni.h>
+#ifndef _Included_jni_TestJni
+#define _Included_jni_TestJni
+#ifdef __cplusplus
+extern "C" {
+#endif
+JNIEXPORT void JNICALL Java_jni_TestJni_display(JNIEnv *, jobject, jstring);
+#ifdef __cplusplus
+}
+#endif
+#endif
+
+然后新建一个cpp文件TestJniImp.cpp，要实现方法JNIEXPORT void JNICALL Java_jni_TestJni_display(JNIEnv *, jobject, jstring);
+内容如下:
+#include <jni.h> 
+#include "jni_TestJni.h"
+#include <stdio.h>
+JNIEXPORT void JNICALL Java_jni_TestJni_display(JNIEnv *env, jobject arg, jstring inString){
+       const jbyte* str;
+       //从inString字符串取得指向字符串UTF编码的指针
+str=(const jbyte*)env->GetStringUTFChars(inString,JNI_FALSE);
+       printf("Hello,%s\n",str);
+       //通知本地虚拟机本机代码不再需要通过str访问java字符串
+       env->ReleaseStringUTFChars(inString,(const char*)str);
+       return;
+  }
+保存后执行命令：cl -I"G:\Program Files (x86)\Java\jdk1.6.0_39\include" -I"G:\Program Files (x86)\Java\jdk1.6.0_39\include\win32" -LD "G:\share\jniproject\TestJniImp.cpp" -FeTest.dll
+注意：jni_TestJni.h 与 TestJniImp.cpp文件要在同一个路径下。
+将本路径下生成的.dll文件
+然后运行命令：java -classpath . jni.TestJni   有输出，没报错就成功了。
+
+注意：cpp文件编译生成dll文件，可以用vc++工具，创建一个动态链接库工程，将该两个文件添加到工程中，选编译链接，就可以看到有dll文件产生了。
+
+上面情况是本地为window系统，如果本地为linux系统，那么就要生成.so文件了
+生成.so文件的方法如下：
+先在linux系统上安装好g++,并且安装jdk
+安装好了，就将TestJniImp.cpp，jni_TestJni.h文件拷贝到一个目录
+打开终端，切换到该目录下，运行命令：g++ -fpic -D_REENTRANT -I/share/jdk1.6.0_17/include/linux -I/yourpath -I/share/jdk1.6.0_17/include -c /data/TestJniImp.cpp
+生成.o文件后，再运行命令：g++ -shared TestJniImp.o -o libTest.so  生成.so文件。
+然后把so文件拷贝到/usr/lib目录下，就可以用了。
+
+注意:和windows下不同，linux的库文件必须是以libxxx.so形式命令的(或者 libxxx.so.y，y是版本号)，lib前缀是为了系统能够识别它，xxx是java代码System.loadLibrary("xxx");中引用库的名字。
+
+
+
+

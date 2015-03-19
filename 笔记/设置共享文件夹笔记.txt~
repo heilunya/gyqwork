@@ -1,0 +1,15 @@
+linux下：
+一般，linux系统会自带安装samba，如果没有装，就安装，在debain系统下可用apt-get install samba 安装。
+安装好了，打开/etc/samba/smb.conf 在最后加入以下内容。
+[Share]
+path = /share
+public = yes
+writable = yes
+
+说明：path就是要共享的目录。
+保存后就可以了。如果共享的文件夹只有读的权限，就到文件夹本身设置权限。比如ubuntu，直接在/share文件夹上右键--》属性--》共享 勾选相应的选项。
+
+window下：
+window下选择一个文件夹，右键属性，然后设置共享。  
+
+以上都要求两台电脑是在同一个局域网中，可以互连的。

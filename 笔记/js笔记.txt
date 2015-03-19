@@ -1,0 +1,15 @@
+﻿--  js中把一个option移除掉
+var dept = document.thisForm.DeptID;
+//dept.options[dept.options.length-1].remove();
+dept.removeChild(dept.options[dept.options.length-1]);
+
+//为了兼容ie与火狐浏览器 ie在js中没有trim()函数，故不能写：str.trim()。
+
+如果出现某个浏览器可以显示，某个浏览器不能显示，一般是js中用了一些函数是该浏览器没有的函数，可以用alert()设置断点来调试。一般都是删掉trim()就好了。
+
+
+document.thisForm.target='';   document.thisForm.target="_blank"
+设置本表单提交不弹出新窗口。      设置弹出窗口
+
+document.thisForm.action=location.href;
+设置本表单提交的url为表单所在页面的url

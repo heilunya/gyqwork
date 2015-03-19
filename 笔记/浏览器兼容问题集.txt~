@@ -1,0 +1,14 @@
+如果在其他浏览器都可以用，唯独在IE6 等低版本取不到表单的值，有可能是表单form的命名冲突了，或者表单元素的命名冲突了。
+再不然就是用了某个javascript系统默认有的函数，比如去除空格函数。
+<jsp:include page="../../xx.jsp" /> 
+<form name="thisFormhdwiki" id="thisFormhdwiki" method="post" action="">
+	<input type="hidden" name="username" id="username" value="<%=personId%>"/>
+</form>	
+<li><a onclick="javascript:submitIt('index.php')"><img src="xx.jpg" width="690" height="155"></a></li>  
+
+用下面这个js函数提交表单，没有兼容性问题。
+function submitIt(urlvalue){
+		document.getElementById('thisFormhdwiki').target='_blank';
+		document.getElementById('thisFormhdwiki').action=urlvalue;
+		document.getElementById('thisFormhdwiki').submit();
+	}

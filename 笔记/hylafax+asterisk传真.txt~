@@ -1,0 +1,49 @@
+ 增加modem的配置流程
+
+1，新增一个传真的modem，设备部会先在60.71上装好硬件，然后我们远程连接到71上，在/dev 目录下可以看到多了一个 ttyIAXxx（xx 是顺延的序号，现在假设xx为26，故ttyIAX26）。
+
+2，在/etc/iaxmodem 目录下创建新文件，文件名为ttyIAX26，内容可复杂其他的文件，只需将 device,port,peername 这三个参数做相应的修改（port,pername与iax.conf相关联），修改后内容如下：
+
+device          /dev/ttyIAX26
+owner           uucp:uucp
+mode            660
+port            4596
+refresh         50
+server          127.0.0.1
+peername        iaxmodem-26
+secret          22882222
+codec           alaw
+
+3，修改/etc/asterisk/iax.conf，增加如下内容（说明：端口port与上面的一致，context 参照 extensions.conf分机规则）：
+
+[iaxmodem-26]
+type=friend
+secret=22882222
+port=4596
+host=dynamic
+disallow=all
+allow=alaw
+allow=ualw
+requirecalltoken=no
+context=from-iax-fax-out
+
+4，修改/etc/extensions.conf，增加如下内容：
+
+[from-pstn-26]
+exten => s,1,Answer();
+exten => s,2,Dial(IAX2/iaxmodem-26);
+
+5，修改/etc/asterisk/chan_dahdi.conf（说明：context 参照 extensions.conf），增加如下内容：
+
+signalling=fxs_ks
+callerid=asreceived
+group=0
+;context=from-pstn
+context=from-pstn-26
+channel => 33
+
+6，最后切换到路径/var/spool/hylafax/etc 目录下，执行命令：faxaddmodem  ttyIAX26   回车，然后输入 0086  0769 22882222  然后一直回车。
+
+7，用faxstat -s  看是是否有列出新加的 modem，有就算成功了。
+
+

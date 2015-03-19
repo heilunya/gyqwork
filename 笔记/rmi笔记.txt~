@@ -1,0 +1,13 @@
+rmi一个简单实例参考http://blog.csdn.net/leslies2/article/details/6436847
+如果要在远程调用老是报java.rmi.ConnectException: Connection refused to host: 127.0.1.1错误
+其中127.0.1.1 是与提供服务（运行service端）的机器用hostname -i 命令打印出来的一致 
+就修改/etc/hosts 文件，增加一行：ip  hostname  其中hostname为一个代名称 保存
+然后运行命令 hostname 上面的hostname  回车  ，然后重启下服务端java
+这样再次运行客户端，就不会报错了，详细参考http://blog.csdn.net/yangyan19870319/article/details/6732411
+
+有package的多个java类，用dos编译时，先把所有类拷贝到一个目录下，然后javac -d . *.java 回车
+生成放class的文件夹，运行命令 java -classpath . 类名称（没有.java后缀）  回车(或者可以把该class文件夹的路径设置到环境变量classpath中，这样就不用加 -classpath . 了)
+
+在eclipse运行service ，然后在另一台电脑（也可以是虚拟机，两台要相ping得通的），在另一台电脑上编译好，生成class后，java -classpath . rmi.rmiClient.Client 运行，看下是否有输出
+
+

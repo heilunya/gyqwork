@@ -1,0 +1,11 @@
+﻿1,先下载jdk的安装文件，如jdk-6u24-linux-x64.bin  或者jdk-6u17-linux-i586.bin
+2,到存放该文件的目录下，运行./filename  这样就安装了，安装在本目录下。
+3,修改/etc/profile,在文件末尾加入以下内容：
+export JAVA_HOME=/data/boss_linux/jdk1.6.0_24
+export JAVA_BIN=/data/boss_linux/jdk1.6.0_24/bin
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export JRE_HOME=$JAVA_HOME/jre
+export JAVA_HOME JAVA_BIN PATH CLASSPATH
+
+保存后重启即可用java命令，看下是否有输出，一般是成功了。

@@ -1,0 +1,26 @@
+﻿一.使用github
+1,命令安装git  sudo apt-get install git
+2,测试是否已经安装  git -v
+3,登录https://github.com  github官网注册帐号  注册后 点击 New repository创建仓库
+4,到本地选一个文件夹，执行命令 git clone    www.xxxxx.com（注册右下方有个网址，git提交的地址）
+5,进入刚才拷贝出的文件夹 将要上传的文件或文件夹拷贝到该目录下
+
+1.准备好要提交的文件
+    git add filename   添加控制
+2.提交文件
+    提交前通过git config 设置全局的默认user.email和user.name
+                        root@guoyaqiu:~/gyq/github/gyqwork# git config --global user.email "1428292321@qq.com"
+			   root@guoyaqiu:~/gyq/github/gyqwork# git config --global user.name "gyq"
+    设置好提交。
+    git commit filename
+3.通过push将文件上传到github
+    git push
+    
+    提交的时候需要输入提交说明，最后要输入用户名和密码
+
+6,执行git add  filename     //是新文件添加到git版本控制
+git  commit filename    //把提交的文件放到缓存区（写注释前面不要加#）
+git push  //把缓存区的东西提交仓库
+
+一般上传文件都是要三步骤：add  commit  push  
+

@@ -1,0 +1,71 @@
+先以linux系统为例
+1,机器上先装好jdk，并设置好JAVA_HOME
+2,安装依赖包 
+apt-get install make
+apt-get install libpcre3 libpcre3-dev libpcrecpp0 libssl-dev zlib1g-dev
+3,下载 Nginx 并解压： 
+# cd /usr/local/soft/
+# wget http://nginx.org/download/nginx-1.2.3.tar.gz
+# tar -zxvf nginx-1.2.3.tar.gz
+4,编译安装Nginx
+# cd nginx-1.2.3
+# ./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-http_flv_module --with-http_gzip_static_module --with-http_stub_status_module
+# make
+# make install
+
+5,运行Nginx，验证安装是否成功： 
+# /usr/local/nginx/sbin/nginx (如果不行，后面加个start)
+访问 http://(服务器ip地址)/ ，若看到“Welcome to nginx!”即安装成功。 
+
+配置nginx与resin
+打开nginx.conf
+在server { 中加入  proxy_pass   http://192.168.x.x（ip对应端口）;  
+
+这样就可以把请求转到resin了。
+
+二，如果要配置负载均衡
+A主服务器
+打开nginx.conf，文件位置在nginx安装目录的conf目录下。
+
+在http段加入以下代码
+
+upstream a.com {
+      server  192.168.5.126:80;
+      server  192.168.5.27:80;
+}
+ 
+server{
+    listen 80;
+    server_name a.com;
+    location / {
+        proxy_pass         http://a.com;
+        proxy_set_header   Host             $host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    }
+}
+
+保存重启nginx
+
+B、C服务器nginx.conf设置
+打开nginx.confi，在http段加入以下代码
+
+server{
+    listen 80;
+    server_name a.com;
+    index index.html;
+    root /data0/htdocs/www;
+}
+
+保存重启nginx
+
+测试
+当访问a.com的时候，为了区分是转向哪台服务器处理我分别在B、C服务器下写一个不同内容的index.html文件，以作区分。
+
+打开浏览器访问a.com结果，刷新会发现所有的请求均分别被主服务器（192.168.5.149）分配到B服务器（192.168.5.27）与C服务器（192.168.5.126）上，实现了负载均衡效果。
+
+linux下重启nginx可以用命令：/usr/local/nginx/sbin/nginx restart   如果是windows下 ，在任务管理器中找到nginx.exe进程，结束它就行。
+
+
+window下安装很简单，下载nginx for window版，然后解压，运行nginx.exe即可。如果要同时配置iis，iis启动可能会报错，那是因为iis绑定的80端口已经被nginx占用了，可以用命令
+netstat -ano | findstr "80"   找到是那个进程id占用80端口，将其kill掉，或者，修改iis的绑定端口。
